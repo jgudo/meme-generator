@@ -1,0 +1,14 @@
+@mixin transition($element: all, $duration: .3s, $func: ease) {
+  -webkit-transition: $element $duration cubic-bezier(.67,.26,.56,1.1) ; 
+  -moz-transition: $element $duration cubic-bezier(.67,.26,.56,1.1);
+  -o-transition: $element $duration cubic-bezier(.67,.26,.56,1.1);
+  -ms-transition: $element $duration cubic-bezier(.67,.26,.56,1.1);
+  transition: $element $duration cubic-bezier(.67,.26,.56,1.1);
+}
+
+@mixin transform($prop) {
+  -webkit-transform: $prop;
+  -moz-transform: $prop;
+  -o-transform: $prop;
+  transform: $prop;
+}
