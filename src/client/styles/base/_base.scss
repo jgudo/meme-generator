@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+}
+
+p {
+    line-height: $l-size;
+    letter-spacing: .5px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+}   
