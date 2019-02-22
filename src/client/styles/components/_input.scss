@@ -1,4 +1,4 @@
-input {
+input[type="text"] {
   display: block;
   width: 100%;
   padding: $s-size $m-size;
@@ -8,4 +8,8 @@ input {
   &:focus {
     outline: none;
   }
+}
+
+input[type="color"]:hover {
+  cursor: pointer;
 }

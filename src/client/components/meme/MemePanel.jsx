@@ -7,7 +7,9 @@ import { MemeContext } from '../provider/MemeProvider';
 class MemePanel extends Component {
   state = {
     topText: 'TOP TEXT',
+    topTextColor: '#000',
     bottomText: 'BOTTOM TEXT',
+    bottomTextColor: '#000',
     baseImage: ''
   };
 
@@ -32,6 +34,16 @@ class MemePanel extends Component {
       });
   };
 
+  onTopTextColorChange = (e) => {
+    const color = e.target.value;
+    this.setState(() => ({ topTextColor: color }));
+  };
+
+  onBottomTextColorChange = (e) => {
+    const color = e.target.value;
+    this.setState(() => ({ bottomTextColor: color }));
+  };
+
   render() {
     const { topText, bottomText } = this.state;
     return (
@@ -50,7 +62,13 @@ class MemePanel extends Component {
                     /* eslint-enable */
                 >
                   <div className="meme__top-text">
-                    <h1>{topText}</h1>
+                    <h1 
+                        className="meme__text"
+                        style={{
+                          color: this.state.topTextColor
+                        }}>
+                      {topText}
+                    </h1>
                   </div>
                   <img 
                       alt=""
@@ -58,27 +76,47 @@ class MemePanel extends Component {
                       src={this.state.baseImage} 
                   />
                   <div className="meme__bottom-text">
-                    <h1>{bottomText}</h1>
+                    <h1 
+                        className="meme__text"
+                        style={{
+                          color: this.state.bottomTextColor
+                        }}>
+                    {bottomText}
+                    </h1>
                   </div>
                 </div>
                 <div className="meme__form">
                   <div className="meme__form-control">
                     <span className="meme__form-title">Top Text</span>  
-                    <input 
-                        onChange={this.onTopTextChange}
-                        placeholder="Top Text"
-                        type="text" 
-                        value={topText}
-                    />
+                    <div className="meme__form-wrapper">
+                      <input 
+                          onChange={this.onTopTextChange}
+                          placeholder="Top Text"
+                          type="text" 
+                          value={topText}
+                      />
+                      <input
+                          onChange={this.onTopTextColorChange} 
+                          style={{ marginLeft: '15px' }}
+                          type="color"
+                      />
+                    </div>
                   </div>
                   <div className="meme__form-control">  
                     <span className="meme__form-title">Top Text</span> 
-                    <input 
-                        onChange={this.onBottomTextChange}
-                        placeholder="Bottom Text"
-                        type="text" 
-                        value={bottomText}
-                    />
+                    <div className="meme__form-wrapper">
+                      <input 
+                          onChange={this.onBottomTextChange}
+                          placeholder="Bottom Text"
+                          type="text" 
+                          value={bottomText}
+                      />
+                      <input 
+                          onChange={this.onBottomTextColorChange}
+                          style={{ marginLeft: '15px' }}
+                          type="color"
+                      />
+                    </div>
                   </div>
                   <div className="meme__form-control">
                     <button>Upload Own Photo</button>
