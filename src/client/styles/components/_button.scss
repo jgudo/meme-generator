@@ -1,0 +1,21 @@
+button {
+  background: $yellow;
+  color: $black;
+  padding: $s-size $sl-size;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.1);
+  @include transition();
+
+  &:hover {
+    background: darken($yellow, 15%);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button--small {
+  font-size: $s-size;
+}

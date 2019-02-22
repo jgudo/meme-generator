@@ -1,0 +1,47 @@
+.slick-arrow {
+  padding: $sl-size;
+  background: $yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  @include transition();
+
+  &:hover {
+    background: darken($yellow, 15%);
+  }
+
+  &:active {
+    background: darken($yellow, 15%);
+  }
+
+  &:focus {
+    background: darken($yellow, 15%);
+  }
+}
+
+.slick-prev:before,
+.slick-next:before {
+  position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    color: $black;
+}
+
+.slick-prev {
+  left: -35px;
+  z-index: 1;
+}
+
+.slick-next {
+  right: -35px;
+  z-index: 1;
+}
+
+.slick-list:hover {
+  cursor: grab;
+}
