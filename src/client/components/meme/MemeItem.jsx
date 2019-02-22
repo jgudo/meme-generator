@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 
 const Meme = ({ meme }) => (
   <div className="meme">
-    <h3 className="meme__title">{meme.name}</h3>
-    <img 
-        alt={meme.name}
-        className="meme__image"
-        src={meme.url} 
+    <div className="meme__image">
+      <img 
+          alt={meme.name}
+          data-key={meme.id} 
+          src={meme.url} 
       />
+    </div>
+    <div className="meme__title">
+      <h3>{meme.name}</h3>
+    </div>
   </div>
 );
 

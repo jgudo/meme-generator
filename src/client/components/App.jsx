@@ -2,13 +2,16 @@ import React from 'react';
 import MemeProvider from './provider/MemeProvider';
 
 import MemeList from './meme/MemeList';
+import MemePanel from './meme/MemePanel';
+import Navigation from './layout/Navigation';
 
 const App = () => (
   <MemeProvider>
-    <div>
-      <h1>List of Popular Memes</h1>
+    <Navigation />
+    <div className="meme__content">
       <MemeList />
-  </div>
+      <MemePanel />
+    </div>
   </MemeProvider>
 );
 
