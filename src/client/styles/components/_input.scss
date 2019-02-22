@@ -13,3 +13,11 @@ input[type="text"] {
 input[type="color"]:hover {
   cursor: pointer;
 }
+
+.file-chooser {
+  display: none;
+}
+
+label[for="file"] {
+  @extend button;
+}

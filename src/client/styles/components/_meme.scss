@@ -115,4 +115,11 @@
 .meme__text {
   font-weight: 900;
   word-break: break-all;
+  text-shadow:
+    1px 1px 0 #000,
+   -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
+
 }

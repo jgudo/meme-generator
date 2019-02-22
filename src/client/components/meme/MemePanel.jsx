@@ -119,7 +119,16 @@ class MemePanel extends Component {
                     </div>
                   </div>
                   <div className="meme__form-control">
-                    <button>Upload Own Photo</button>
+                    <input 
+                        className="file-chooser"
+                        id="file"
+                        onChange={this.onFileChooseChange}
+                        type="file"
+                    />
+                    <br/>
+                    <label for="file">
+                    Upload Own Photo
+                    </label>
                   </div>
                   <br/>
                   <div className="meme__form-control">
