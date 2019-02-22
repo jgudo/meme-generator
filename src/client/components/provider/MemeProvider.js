@@ -16,7 +16,7 @@ class MemeProvider extends Component {
         const memes = JSON.parse(localStorage.getItem('memes'));
         this.setState(() => ({ 
           memes,
-          selectedMeme: memes[0] 
+          selectedMeme: memes[0]
         }));
       } else this.fetchMeme();
     } catch (e) {
@@ -30,7 +30,7 @@ class MemeProvider extends Component {
 
     this.setState(() => ({ 
       memes: meme.data.memes,
-      selectedMeme: meme[0] 
+      selectedMeme: meme.data.memes[0]
     }));
     localStorage.setItem('memes', JSON.stringify(this.state.memes));
   };
