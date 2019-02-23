@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import { MemeContext } from '../provider/MemeProvider';
 
+
 import Meme from './MemeItem';
 
 const MemeList = () => {
@@ -14,7 +15,6 @@ const MemeList = () => {
   };
 
   const onSelectImage = (event, array, callback) => {
-    console.log(event.target);
     const key = event.target.getAttribute('data-key');
     const selected = array.filter((item) => {
       return item.id === key;
