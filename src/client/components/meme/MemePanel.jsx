@@ -16,13 +16,11 @@ class MemePanel extends Component {
   };
 
   componentDidMount() {
-    try {
-      if ('localStorage' in window && localStorage.getItem('memeSettings')) {
-        const memeSettings = JSON.parse(localStorage.getItem('memeSettings'));
-        this.setState(() => ({ ...memeSettings }));
-      }
-    } catch (e) { console.log('Failed to fetch memeSettings from storage'); }
-
+    if ('localStorage' in window && localStorage.getItem('memeSettings')) {
+      const memeSettings = JSON.parse(localStorage.getItem('memeSettings'));
+      this.setState(() => ({ ...memeSettings }));
+    }
+   
     this.interactElement(this.meme__top_text);
     this.interactElement(this.meme__bottom_text);
   }
@@ -74,7 +72,19 @@ class MemePanel extends Component {
           range: Infinity,
           relativePoints: [{ x: 0, y: 0 }]
         },
+        restrict: {
+          restriction: 'parent',
+          elementRect: { 
+            top: 0, 
+            left: 0, 
+            bottom: 1, 
+            right: 1 
+          }
+        },
         onmove: this.dragMoveListener
+      })
+      .pointerEvents({
+        ignoreFrom: '[no-pointer-event]'
       })
       .resizable({
         edges: { 
@@ -86,9 +96,11 @@ class MemePanel extends Component {
         restrictEdges: {
           outer: 'parent',
           endOnly: true
-        }
+        },
+        inertia: true
       })
-      .on('resizemove', this.onResizeMove);
+      .on('resizemove', this.onResizeMove)
+      .on('resizeend', this.onResizeEnd);
   };
 
   onResizeMove = (event) => {
@@ -105,12 +117,17 @@ class MemePanel extends Component {
     y += event.deltaRect.top;
 
     targetElement.style.transform = `'translate(${x}px, ${y}px)`;
-
+    targetElement.style.border = '3px dashed #4c8ade';
     targetElement.setAttribute('data-x', x);
     targetElement.setAttribute('data-y', y);
 
     // Scale font size
-    this.setScaledFont(targetElement, 0.35);
+    this.setScaledFont(targetElement, 0.25);
+  };
+
+  onResizeEnd = (event) => {
+    const targetElement = event.target;
+    targetElement.style.border = '3px dashed transparent';
   };
 
   dragMoveListener = (event) => {
@@ -120,7 +137,7 @@ class MemePanel extends Component {
 
     // translate the element
     targetElement.style.transform = `translate(${x}px, ${y}px)`;
-    
+
     // update the posiion attributes
     targetElement.setAttribute('data-x', x);
     targetElement.setAttribute('data-y', y);
