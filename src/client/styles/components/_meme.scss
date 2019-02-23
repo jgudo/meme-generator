@@ -37,6 +37,7 @@
     height: 100px;
     overflow: hidden;
     border: 1px solid $off-white;
+    background: transparentize($off-white, .5);
     @include transition();
 
     &:hover { border: 1px solid $blue-light-4; }
@@ -108,6 +109,7 @@
   right: 0;
   margin: auto;
   text-align: center;
+  z-index: 1;
   border: 3px dashed transparent;
 }
 
@@ -119,6 +121,7 @@
   right: 0;
   margin: auto;
   text-align: center;
+  z-index: 1;
   border: 3px dashed transparent;
 }
 

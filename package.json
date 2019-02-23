@@ -53,6 +53,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-lazy-load": "^3.0.13",
     "react-slick": "^0.23.2",
     "slick-carousel": "^1.8.1",
     "webfontloader": "^1.6.28"

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import html2canvas from 'html2canvas';
 import interact from 'interactjs';
+import LazyLoad from 'react-lazy-load';
 import { saveAs } from 'file-saver';
 import base64 from '../helpers/base64Image';
 import { MemeContext } from '../provider/MemeProvider';
 import fileUpload from '../helpers/fileUpload';
+
+import ImageLoader from '../layout/ImageLoader';
 
 class MemePanel extends Component {
   state = {
@@ -184,11 +187,23 @@ class MemePanel extends Component {
                       {topText}
                     </h1>
                   </div>
-                  <img 
+                  <LazyLoad 
+                      width={450}
+                      height={450}
+                      debounce={false}
+                      offsetVertical={250}
+                    >
+                      <ImageLoader 
+                          alt=""
+                          className="meme__image-selected"
+                          src={this.state.baseImage} 
+                      />
+                  </LazyLoad>
+                  {/* <img 
                       alt=""
                       className="meme__image-selected"
                       src={this.state.baseImage} 
-                  />
+                  /> */}
                   <div 
                       className="meme__bottom-text"
                       draggable="true"
