@@ -1,17 +1,37 @@
 import React, { Component } from 'react';
 import html2canvas from 'html2canvas';
+import interact from 'interactjs';
 import { saveAs } from 'file-saver';
 import base64 from '../helpers/base64Image';
 import { MemeContext } from '../provider/MemeProvider';
+import fileUpload from '../helpers/fileUpload';
 
 class MemePanel extends Component {
   state = {
     topText: 'TOP TEXT',
-    topTextColor: '#000',
+    topTextColor: '#ffffff',
     bottomText: 'BOTTOM TEXT',
-    bottomTextColor: '#000',
+    bottomTextColor: '#ffffff',
     baseImage: ''
   };
+
+  componentDidMount() {
+    try {
+      if ('localStorage' in window && localStorage.getItem('memeSettings')) {
+        const memeSettings = JSON.parse(localStorage.getItem('memeSettings'));
+        this.setState(() => ({ ...memeSettings }));
+      }
+    } catch (e) { console.log('Failed to fetch memeSettings from storage'); }
+
+    this.interactElement(this.meme__top_text);
+    this.interactElement(this.meme__bottom_text);
+  }
+
+  componentDidUpdate() {
+    if ('localStorage' in window) {
+      localStorage.setItem('memeSettings', JSON.stringify(this.state));
+    }
+  }
 
   onTopTextChange = (e) => {
     const topText = e.target.value;
@@ -44,12 +64,83 @@ class MemePanel extends Component {
     this.setState(() => ({ bottomTextColor: color }));
   };
 
+  interactElement = (element) => {
+    interact(element)
+      .draggable({
+        snap: {
+          targets: [
+            interact.createSnapGrid({ x: 10, y: 10 })
+          ],
+          range: Infinity,
+          relativePoints: [{ x: 0, y: 0 }]
+        },
+        onmove: this.dragMoveListener
+      })
+      .resizable({
+        edges: { 
+          left: true, 
+          right: true, 
+          bottom: true, 
+          top: true 
+        },
+        restrictEdges: {
+          outer: 'parent',
+          endOnly: true
+        }
+      })
+      .on('resizemove', this.onResizeMove);
+  };
+
+  onResizeMove = (event) => {
+    const targetElement = event.target;
+    let x = (parseFloat(targetElement.getAttribute('data-x')) || 0);
+    let y = (parseFloat(targetElement.getAttribute('data-y')) || 0);
+
+    // update the element's style
+    targetElement.style.width = `${event.rect.width}px`;
+    targetElement.style.height = `${event.rect.height}px`;
+
+    // translate when resizing from top or left edges
+    x += event.deltaRect.left;
+    y += event.deltaRect.top;
+
+    targetElement.style.transform = `'translate(${x}px, ${y}px)`;
+
+    targetElement.setAttribute('data-x', x);
+    targetElement.setAttribute('data-y', y);
+
+    // Scale font size
+    this.setScaledFont(targetElement, 0.35);
+  };
+
+  dragMoveListener = (event) => {
+    const targetElement = event.target;
+    const x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + event.dx;
+    const y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + event.dy;
+
+    // translate the element
+    targetElement.style.transform = `translate(${x}px, ${y}px)`;
+    
+    // update the posiion attributes
+    targetElement.setAttribute('data-x', x);
+    targetElement.setAttribute('data-y', y);
+  };
+
+  setScaledFont = (targetElement, scale) => {
+    const size = targetElement.offsetWidth;
+    const fs = size * scale;
+    /* eslint-disable */
+    targetElement.style.fontSize = `${fs}%`;
+    /* eslint-enable */
+    // return this;
+  };
+
   render() {
     const { topText, bottomText } = this.state;
     return (
       <div className="meme__panel">
         <MemeContext.Consumer>
-          {({ selectedMeme }) => {
+          {({ selectedMeme, setSelectedImage }) => {
             base64(selectedMeme.url).then((base64Img) => {
               this.setState(() => ({ baseImage: base64Img }));
             });
@@ -61,7 +152,13 @@ class MemePanel extends Component {
                     ref={node => this.meme__image = node}
                     /* eslint-enable */
                 >
-                  <div className="meme__top-text">
+                  <div 
+                      className="meme__top-text"
+                      draggable="true"
+                      /* eslint-disable */
+                      ref={node => this.meme__top_text = node }
+                      /* eslint-enable */
+                  >
                     <h1 
                         className="meme__text"
                         style={{
@@ -75,7 +172,13 @@ class MemePanel extends Component {
                       className="meme__image-selected"
                       src={this.state.baseImage} 
                   />
-                  <div className="meme__bottom-text">
+                  <div 
+                      className="meme__bottom-text"
+                      draggable="true"
+                      /* eslint-disable */
+                      ref={node => this.meme__bottom_text = node }
+                      /* eslint-enable */
+                  >
                     <h1 
                         className="meme__text"
                         style={{
@@ -99,6 +202,7 @@ class MemePanel extends Component {
                           onChange={this.onTopTextColorChange} 
                           style={{ marginLeft: '15px' }}
                           type="color"
+                          value={this.state.topTextColor}
                       />
                     </div>
                   </div>
@@ -115,6 +219,7 @@ class MemePanel extends Component {
                           onChange={this.onBottomTextColorChange}
                           style={{ marginLeft: '15px' }}
                           type="color"
+                          value={this.state.bottomTextColor}
                       />
                     </div>
                   </div>
@@ -122,11 +227,13 @@ class MemePanel extends Component {
                     <input 
                         className="file-chooser"
                         id="file"
-                        onChange={this.onFileChooseChange}
+                        onChange={(e) => {
+                          fileUpload(e, setSelectedImage);
+                        }}
                         type="file"
                     />
                     <br/>
-                    <label for="file">
+                    <label htmlFor="file">
                     Upload Own Photo
                     </label>
                   </div>

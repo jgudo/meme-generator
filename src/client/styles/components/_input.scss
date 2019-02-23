@@ -18,6 +18,7 @@ input[type="color"]:hover {
   display: none;
 }
 
-label[for="file"] {
+label[for="file"],
+label[for="navigation__file-upload"] {
   @extend button;
 }

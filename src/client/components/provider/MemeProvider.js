@@ -10,14 +10,20 @@ class MemeProvider extends Component {
     selectedMeme: {}
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     try {
       if (localStorage.getItem('memes')) {
         const memes = JSON.parse(localStorage.getItem('memes'));
-        this.setState(() => ({ 
-          memes,
-          selectedMeme: memes[0]
-        }));
+        this.setState(() => ({ memes }));
+
+        if (localStorage.getItem('memeSettings')) {
+          const memeSettings = JSON.parse(localStorage.getItem('memeSettings'));
+          if (memeSettings.baseImage !== '') {
+            this.setState(() => ({ selectedMeme: { url: memeSettings.baseImage } }));
+          } else {
+            this.setState(() => ({ selectedMeme: memes.data.memes[0] }));
+          }
+        }
       } else this.fetchMeme();
     } catch (e) {
       console.log('Failed to fetch from localStorage ', e);
@@ -28,10 +34,7 @@ class MemeProvider extends Component {
     const memeRequest = await fetch(memeApiEndpoint);
     const meme = await memeRequest.json();
 
-    this.setState(() => ({ 
-      memes: meme.data.memes,
-      selectedMeme: meme.data.memes[0]
-    }));
+    this.setState(() => ({ memes: meme.data.memes }));
     localStorage.setItem('memes', JSON.stringify(this.state.memes));
   };
 

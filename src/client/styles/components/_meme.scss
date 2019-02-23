@@ -67,7 +67,9 @@
 .meme__editor {
   width: 50%;
   height: auto;
+  max-height: 65rem;
   position: relative;
+  overflow: hidden;
 }
 
 .meme__form {
@@ -100,21 +102,35 @@
 
 .meme__top-text {
   position: absolute;
-  top: 0;
-  width: 100%;
+  top: 50px;
+  width: 70%;
+  left: 0;
+  right: 0;
+  margin: auto;
   text-align: center;
+  border: 3px dashed transparent;
 }
 
 .meme__bottom-text {
   position: absolute;
-  bottom: 0;
-  width: 100%;
+  bottom: 50px;
+  width: 70%;
+  left: 0;
+  right: 0;
+  margin: auto;
   text-align: center;
+  border: 3px dashed transparent;
+}
+
+.meme__top-text:hover,
+.meme__bottom-text:hover {
+  border: 3px dashed $yellow;
 }
 
 .meme__text {
   font-weight: 900;
   word-break: break-all;
+  margin: 0;
   text-shadow:
     1px 1px 0 #000,
    -1px -1px 0 #000,  
