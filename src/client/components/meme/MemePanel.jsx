@@ -188,8 +188,6 @@ class MemePanel extends Component {
                     </h1>
                   </div>
                   <LazyLoad 
-                      width={450}
-                      height={450}
                       debounce={false}
                       offsetVertical={250}
                     >
