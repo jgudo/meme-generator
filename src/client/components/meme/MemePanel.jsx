@@ -45,9 +45,13 @@ class MemePanel extends Component {
   };
 
   onSaveHandler = () => {
+    this.save__button.disabled = true;
+    this.save__button.textContent = 'Saving Meme ...';
     html2canvas(this.meme__image)
       .then((canvas) => {
         // const myImage = canvas.toDataURL('image/png');
+        this.save__button.disabled = false;
+        this.save__button.textContent = 'Save Meme';
         const date = new Date().getTime(); 
         canvas.toBlob((blob) => {
           saveAs(blob, `meme-${date}.png`);
@@ -269,7 +273,14 @@ class MemePanel extends Component {
                   </div>
                   <br/>
                   <div className="meme__form-control">
-                    <button onClick={this.onSaveHandler}>Save Meme</button>
+                    <button 
+                        onClick={this.onSaveHandler}
+                        /* eslint-disable */
+                        ref={node => this.save__button = node}
+                        /* eslint-enable */
+                    >
+                    Save Meme
+                    </button>
                   </div>
                 </div>
               </React.Fragment>

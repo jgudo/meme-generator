@@ -101,28 +101,27 @@
   object-fit: contain;
 }
 
-.meme__top-text {
+.meme__top-text,
+.meme__bottom-text {
   position: absolute;
-  top: 50px;
   width: 70%;
   left: 0;
   right: 0;
   margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   z-index: 1;
   border: 3px dashed transparent;
 }
 
+.meme__top-text {
+  top: 50px;
+}
+
 .meme__bottom-text {
-  position: absolute;
   bottom: 50px;
-  width: 70%;
-  left: 0;
-  right: 0;
-  margin: auto;
-  text-align: center;
-  z-index: 1;
-  border: 3px dashed transparent;
 }
 
 .meme__top-text:hover,
