@@ -129,7 +129,7 @@ class MemePanel extends Component {
     targetElement.setAttribute('data-y', y);
 
     // Scale font size
-    this.setScaledFont(targetElement, 0.25);
+    this.setScaledFont(targetElement, 0.35);
   };
 
   onResizeEnd = (event) => {

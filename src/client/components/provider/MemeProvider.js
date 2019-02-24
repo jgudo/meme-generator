@@ -48,7 +48,7 @@ class MemeProvider extends Component {
           }}
       >
         {this.props.children}
-      </MemeContext.Provider>
+        </MemeContext.Provider>
     );
   }
 }
