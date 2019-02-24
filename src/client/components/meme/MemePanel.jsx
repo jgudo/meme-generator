@@ -160,7 +160,13 @@ class MemePanel extends Component {
   };
 
   render() {
-    const { topText, bottomText } = this.state;
+    const { 
+      topText, 
+      bottomText,
+      topTextColor,
+      bottomTextColor,
+      baseImage 
+    } = this.state;
     return (
       <div className="meme__panel">
         <MemeContext.Consumer>
@@ -186,7 +192,7 @@ class MemePanel extends Component {
                     <h1 
                         className="meme__text"
                         style={{
-                          color: this.state.topTextColor
+                          color: topTextColor
                         }}>
                       {topText}
                     </h1>
@@ -198,14 +204,9 @@ class MemePanel extends Component {
                       <ImageLoader 
                           alt=""
                           className="meme__image-selected"
-                          src={this.state.baseImage} 
+                          src={baseImage} 
                       />
                   </LazyLoad>
-                  {/* <img 
-                      alt=""
-                      className="meme__image-selected"
-                      src={this.state.baseImage} 
-                  /> */}
                   <div 
                       className="meme__bottom-text"
                       draggable="true"
@@ -216,7 +217,7 @@ class MemePanel extends Component {
                     <h1 
                         className="meme__text"
                         style={{
-                          color: this.state.bottomTextColor
+                          color: bottomTextColor
                         }}>
                     {bottomText}
                     </h1>
@@ -236,7 +237,7 @@ class MemePanel extends Component {
                           onChange={this.onTopTextColorChange} 
                           style={{ marginLeft: '15px' }}
                           type="color"
-                          value={this.state.topTextColor}
+                          value={topTextColor}
                       />
                     </div>
                   </div>
@@ -253,7 +254,7 @@ class MemePanel extends Component {
                           onChange={this.onBottomTextColorChange}
                           style={{ marginLeft: '15px' }}
                           type="color"
-                          value={this.state.bottomTextColor}
+                          value={bottomTextColor}
                       />
                     </div>
                   </div>
