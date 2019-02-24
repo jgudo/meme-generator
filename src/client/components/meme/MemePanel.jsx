@@ -5,8 +5,8 @@ import LazyLoad from 'react-lazy-load';
 import { saveAs } from 'file-saver';
 import base64 from '../helpers/base64Image';
 import { MemeContext } from '../provider/MemeProvider';
-import fileUpload from '../helpers/fileUpload';
 
+import UploadButton from '../layout/UploadButton';
 import ImageLoader from '../layout/ImageLoader';
 
 class MemePanel extends Component {
@@ -259,18 +259,7 @@ class MemePanel extends Component {
                     </div>
                   </div>
                   <div className="meme__form-control">
-                    <input 
-                        className="file-chooser"
-                        id="file"
-                        onChange={(e) => {
-                          fileUpload(e, setSelectedImage);
-                        }}
-                        type="file"
-                    />
-                    <br/>
-                    <label htmlFor="file">
-                    Upload Own Photo
-                    </label>
+                      <UploadButton setSelectedImage={setSelectedImage}/>
                   </div>
                   <br/>
                   <div className="meme__form-control">

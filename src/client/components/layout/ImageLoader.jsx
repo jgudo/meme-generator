@@ -18,7 +18,6 @@ class ImageLoader extends Component {
     this.setState(() => ({ loaded: true }));
   };
 
-
   render() {
     let { 
       className, 

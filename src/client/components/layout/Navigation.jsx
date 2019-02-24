@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MemeContext } from '../provider/MemeProvider';
-import fileUpload from '../helpers/fileUpload';
+import UploadButton from './UploadButton';
 
 const Navigation = () => (
   <div className="navigation">
@@ -9,21 +9,7 @@ const Navigation = () => (
       {({ setSelectedImage }) => (
         <React.Fragment>
           <span className="navigation__title">Memefy</span>
-          <input 
-              className="file-chooser"
-              id="navigation__file-upload"
-              onChange={(e) => {
-                fileUpload(e, setSelectedImage);
-              }}
-              type="file"
-          />
-          <br/>
-          <label 
-              className="navigation__button button--small"
-              htmlFor="navigation__file-upload"
-          >
-          Upload Own Photo
-          </label>
+          <UploadButton setSelectedImage={setSelectedImage}/>
         </React.Fragment>
       )}
     </MemeContext.Consumer>

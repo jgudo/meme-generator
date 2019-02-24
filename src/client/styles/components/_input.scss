@@ -19,6 +19,6 @@ input[type="color"]:hover {
 }
 
 label[for="file"],
-label[for="navigation__file-upload"] {
+label[for="file-upload"] {
   @extend button;
 }
