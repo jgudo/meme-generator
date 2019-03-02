@@ -1,0 +1,30 @@
+@media (max-width: 420px) {
+
+  // Navigation
+  .navigation {
+    justify-content: space-between;
+  }
+
+  .navigation__title {
+    font-size: $m-size;
+    margin-right: $m-size;
+  }
+
+  //Meme content 
+  .meme__content {
+    padding: $l-size 7%;
+  }
+
+  //Meme panel 
+  .meme__panel {
+    flex-direction: column;
+  }
+  .meme__editor {
+    width: 100%;
+  }
+
+  .meme__form {
+    width: 100%;
+    padding: 0;
+  }
+}

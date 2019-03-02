@@ -8,8 +8,7 @@ const Meme = ({ meme }) => (
   <div className="meme">
     <div className="meme__image">
       <LazyLoad 
-          width={150}
-          height={150}
+          height={100}
           debounce={false}
           offsetVertical={250}
         >

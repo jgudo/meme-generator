@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { MemeContext } from '../provider/MemeProvider';
 
@@ -6,12 +6,22 @@ import { MemeContext } from '../provider/MemeProvider';
 import Meme from './MemeItem';
 
 const MemeList = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.screen.width <= 420) {
+        setIsMobile(true);
+      }
+    });
+  });
+
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7
+    slidesToShow: isMobile ? 2 : 7,
+    slidesToScroll: isMobile ? 2 : 7
   };
 
   const onSelectImage = (event, array, callback) => {
