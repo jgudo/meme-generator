@@ -29,6 +29,10 @@ class MemePanel extends Component {
   }
 
   componentDidUpdate() {
+    const { selectedMeme } = this.context;
+    base64(selectedMeme.url).then((base64Img) => {
+      this.setState(() => ({ baseImage: base64Img }));
+    });
     if ('localStorage' in window) {
       localStorage.setItem('memeSettings', JSON.stringify(this.state));
     }
@@ -167,119 +171,113 @@ class MemePanel extends Component {
       bottomTextColor,
       baseImage 
     } = this.state;
+
+    const { setSelectedImage } = this.context;
+    
     return (
       <div className="meme__panel">
-        <MemeContext.Consumer>
-          {({ selectedMeme, setSelectedImage }) => {
-            base64(selectedMeme.url).then((base64Img) => {
-              this.setState(() => ({ baseImage: base64Img }));
-            });
-            return (
-              <React.Fragment>
-                <div 
-                    className="meme__editor"
-                    /* eslint-disable */
-                    ref={node => this.meme__image = node}
-                    /* eslint-enable */
-                >
-                  <div 
-                      className="meme__top-text"
-                      draggable="true"
-                      /* eslint-disable */
-                      ref={node => this.meme__top_text = node }
-                      /* eslint-enable */
-                  >
-                    <h1 
-                        className="meme__text"
-                        style={{
-                          color: topTextColor
-                        }}>
-                      {topText}
-                    </h1>
-                  </div>
-                  <LazyLoad 
-                      debounce={false}
-                      offsetVertical={250}
-                    >
-                      <ImageLoader 
-                          alt=""
-                          className="meme__image-selected"
-                          src={baseImage} 
-                      />
-                  </LazyLoad>
-                  <div 
-                      className="meme__bottom-text"
-                      draggable="true"
-                      /* eslint-disable */
-                      ref={node => this.meme__bottom_text = node }
-                      /* eslint-enable */
-                  >
-                    <h1 
-                        className="meme__text"
-                        style={{
-                          color: bottomTextColor
-                        }}>
-                    {bottomText}
-                    </h1>
-                  </div>
-                </div>
-                <div className="meme__form">
-                  <div className="meme__form-control">
-                    <span className="meme__form-title">Top Text</span>  
-                    <div className="meme__form-wrapper">
-                      <input 
-                          onChange={this.onTopTextChange}
-                          placeholder="Top Text"
-                          type="text" 
-                          value={topText}
-                      />
-                      <input
-                          onChange={this.onTopTextColorChange} 
-                          style={{ marginLeft: '15px' }}
-                          type="color"
-                          value={topTextColor}
-                      />
-                    </div>
-                  </div>
-                  <div className="meme__form-control">  
-                    <span className="meme__form-title">Top Text</span> 
-                    <div className="meme__form-wrapper">
-                      <input 
-                          onChange={this.onBottomTextChange}
-                          placeholder="Bottom Text"
-                          type="text" 
-                          value={bottomText}
-                      />
-                      <input 
-                          onChange={this.onBottomTextColorChange}
-                          style={{ marginLeft: '15px' }}
-                          type="color"
-                          value={bottomTextColor}
-                      />
-                    </div>
-                  </div>
-                  <div className="meme__form-control">
-                      <UploadButton setSelectedImage={setSelectedImage}/>
-                  </div>
-                  <br/>
-                  <div className="meme__form-control">
-                    <button 
-                        onClick={this.onSaveHandler}
-                        /* eslint-disable */
-                        ref={node => this.save__button = node}
-                        /* eslint-enable */
-                    >
-                    Save Meme
-                    </button>
-                  </div>
-                </div>
-              </React.Fragment>
-            );
-          }}
-        </MemeContext.Consumer>
+        <div 
+            className="meme__editor"
+            /* eslint-disable */
+            ref={node => this.meme__image = node}
+            /* eslint-enable */
+        >
+          <div 
+              className="meme__top-text"
+              draggable="true"
+              /* eslint-disable */
+              ref={node => this.meme__top_text = node }
+              /* eslint-enable */
+          >
+            <h1 
+                className="meme__text"
+                style={{
+                  color: topTextColor
+                }}>
+              {topText}
+            </h1>
+          </div>
+          <LazyLoad 
+              debounce={false}
+              offsetVertical={250}
+            >
+              <ImageLoader 
+                  alt=""
+                  className="meme__image-selected"
+                  src={baseImage} 
+              />
+          </LazyLoad>
+          <div 
+              className="meme__bottom-text"
+              draggable="true"
+              /* eslint-disable */
+              ref={node => this.meme__bottom_text = node }
+              /* eslint-enable */
+          >
+            <h1 
+                className="meme__text"
+                style={{
+                  color: bottomTextColor
+                }}>
+            {bottomText}
+            </h1>
+          </div>
+        </div>
+        <div className="meme__form">
+          <div className="meme__form-control">
+            <span className="meme__form-title">Top Text</span>  
+            <div className="meme__form-wrapper">
+              <input 
+                  onChange={this.onTopTextChange}
+                  placeholder="Top Text"
+                  type="text" 
+                  value={topText}
+              />
+              <input
+                  onChange={this.onTopTextColorChange} 
+                  style={{ marginLeft: '15px' }}
+                  type="color"
+                  value={topTextColor}
+              />
+            </div>
+          </div>
+          <div className="meme__form-control">  
+            <span className="meme__form-title">Top Text</span> 
+            <div className="meme__form-wrapper">
+              <input 
+                  onChange={this.onBottomTextChange}
+                  placeholder="Bottom Text"
+                  type="text" 
+                  value={bottomText}
+              />
+              <input 
+                  onChange={this.onBottomTextColorChange}
+                  style={{ marginLeft: '15px' }}
+                  type="color"
+                  value={bottomTextColor}
+              />
+            </div>
+          </div>
+          <div className="meme__form-control">
+              <UploadButton setSelectedImage={setSelectedImage}/>
+          </div>
+          <br/>
+          <div className="meme__form-control">
+            <button 
+                onClick={this.onSaveHandler}
+                /* eslint-disable */
+                ref={node => this.save__button = node}
+                /* eslint-enable */
+            >
+            Save Meme
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 }
+
+MemePanel.contextType = MemeContext;
 
 export default MemePanel;
