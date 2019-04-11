@@ -1,15 +1,18 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const CSSExtract = new ExtractTextPlugin('css/app.css');
+const resolve = (dir) => {
+  return path.join(__dirname, '..', dir);
+};
 
 module.exports = {
-  entry: ['@babel/polyfill', path.resolve(__dirname, '../src/client/index.js')],
+  entry: [
+    '@babel/polyfill', resolve('src/client/index.js')
+  ],
   output: {
-    path: path.join(__dirname, '../public'),
-    filename: 'js/app.bundle.js'
+    path: resolve('dist'),
+    filename: 'js/[name].bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [{
@@ -20,49 +23,60 @@ module.exports = {
       }
     }, {
       test: /\.s?css$/,
-      use: CSSExtract.extract({
-        use: [{
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true
-          }
-        }]
-      })
+      use: [{
+        loader: MiniCssExtractPlugin.loader
+      }, {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true
+        }
+      }, {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true
+        }
+      }]
     }, {
       test: /\.(png|svg|jpg|jpeg|gif)$/,
       use: [{
         loader: 'file-loader',
         options: {
+          limit: 10000,
           outputPath: 'images',
-          name: '[name][hash].[ext]'
+          name: '[name].[hash].[ext]'
         }
       }]
-    },
-    {
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      loader: 'file-loader',
+      options: {
+        limit: 10000,
+        name: '[name].[hash].[ext]',
+        outputPath: 'media'
+      }
+    }, {
       test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
       use: [{
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]',
+          limit: 10000,
+          name: '[name].[hash].[ext]',
           outputPath: 'fonts'
         }
       }]
     }]
-  },
+  }, 
   resolve: {
     modules: [
-      path.resolve(__dirname, '../src'),
-      path.resolve(__dirname, '../node_modules')
+      resolve('src'),
+      'node_modules'
     ],
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
-    new CleanWebpackPlugin(['public']),
-    CSSExtract
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name].[contenthash]_[id].css'
+    })
   ]
 };

@@ -1,13 +1,38 @@
+/*
+ ----------------
+ Base | Variables
+*/
+
 @import './base/settings';
 @import './base/base';
 
+/*
+ ----------------
+ Mixins | Functions
+*/
 @import './mixins/mixins';
 
+/*
+ ----------------
+ Components
+*/
 @import './components/meme';
-@import './components/carousel';
+@import './components/slider';
 @import './components/navigation';
 @import './components/button';
 @import './components/input';
 @import './components/image-loader';
+@import './components/loader';
 
+/*
+ ----------------
+ Responsive
+*/
 @import './responsive/smartphone';
+
+/*
+ ----------------
+ Utils
+*/
+@import './utils/animation';
+

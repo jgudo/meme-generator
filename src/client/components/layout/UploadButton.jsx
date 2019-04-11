@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { MemeContext } from '../provider/MemeProvider'; 
 
-const UploadButton = (props) => {
-  const onFileChooseChange = (e, callback) => {
+const UploadButton = () => {
+  const { setSelectedImage, triggerLoader } = useContext(MemeContext);
+
+  const onFileChooseChange = (e) => {
     const fileType = e.target.files[0].type;
+
+    triggerLoader(true);
     if (fileType === 'image/jpeg' || fileType === 'image/png') {
       const reader = new FileReader(); 
       reader.addEventListener('load', () => {
-        callback({ url: reader.result });
+        setSelectedImage(reader.result);
+        triggerLoader(false);
       });
   
       reader.readAsDataURL(e.target.files[0]);
     } else {
-      /* eslinst-disable */
+      /* eslint-disable no-alert */
       alert('file type must be JPEG or PNG');
-      /* eslinst-enable */
     }
   };
 
@@ -23,12 +28,9 @@ const UploadButton = (props) => {
       <input 
           className="file-chooser"
           id="file-upload"
-          onChange={(e) => {
-            onFileChooseChange(e, props.setSelectedImage);
-          }}
+          onChange={onFileChooseChange}
           type="file"
       />
-      <br/>
       <label 
           className="file-upload-button"
           htmlFor="file-upload"

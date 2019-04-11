@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import base64 from '../helpers/base64Image';
 
 export const MemeContext = React.createContext();
 const memeApiEndpoint = 'https://api.imgflip.com/get_memes';
@@ -7,36 +8,68 @@ const memeApiEndpoint = 'https://api.imgflip.com/get_memes';
 class MemeProvider extends Component {
   state = {
     memes: [],
-    selectedMeme: {}
+    selectedMeme: null,
+    isLoadingImage: false,
+    isLoading: false
   };
 
   componentDidMount() {
-    if ('localStorage' in window && localStorage.getItem('memes')) {
-      const memes = JSON.parse(localStorage.getItem('memes'));
-      this.setState(() => ({ memes }));
+    if (localStorage.memefy) {
+      const memefy = JSON.parse(localStorage.getItem('memefy'));
+      this.setState({
+        memes: memefy.memes,
+        selectedMeme: memefy.selectedMeme
+      });
+    } else {
+      this.fetchMeme();
+    }
+  }
 
-      if (localStorage.getItem('memeSettings')) {
-        const memeSettings = JSON.parse(localStorage.getItem('memeSettings'));
-        if (memeSettings.baseImage !== '') {
-          this.setState(() => ({ selectedMeme: { url: memeSettings.baseImage } }));
-        } else {
-          this.setState(() => ({ selectedMeme: memes.data.memes[0] }));
-        }
-      }
-    } else this.fetchMeme();
+  componentDidUpdate() {
+    if (localStorage.memefy) {
+      const memefy = JSON.parse(localStorage.getItem('memefy'));
+
+      localStorage.setItem('memefy', JSON.stringify({ 
+        ...memefy, 
+        selectedMeme: this.state.selectedMeme
+      }));
+    }
   }
 
   fetchMeme = async () => {
-    const memeRequest = await fetch(memeApiEndpoint);
-    const meme = await memeRequest.json();
+    try {
+      this.setState({ isLoading: true, isLoadingImage: true });
+      const memeRequest = await fetch(memeApiEndpoint);
+      const meme = await memeRequest.json();
 
-    this.setState(() => ({ memes: meme.data.memes }));
-    localStorage.setItem('memes', JSON.stringify(this.state.memes));
+      if (meme) {
+        this.setState({ 
+          memes: meme.data.memes,
+          isLoading: false,
+          isLoadingImage: false 
+        }, () => {
+          base64(this.state.memes[0].url).then((img) => {
+            this.setState({ selectedMeme: img });
+          });
+        });
+      }
+
+      localStorage.setItem('memefy', JSON.stringify(this.state));
+    } catch(e) {
+      console.log('Cannot fetch memes from server', e);
+    }
   };
 
   setSelectedImage = (image) => {
-    this.setState(() => ({ selectedMeme: image }));
+    this.setState({ 
+      selectedMeme: image,
+      isLoadingImage: false
+    });
   };
+
+  isLoadingImage = (boolean) => {
+    this.setState({ isLoadingImage: boolean });
+  }
 
   render() {
     return (
@@ -44,7 +77,10 @@ class MemeProvider extends Component {
           value={{ 
             memes: this.state.memes, 
             selectedMeme: this.state.selectedMeme,
-            setSelectedImage: this.setSelectedImage
+            setSelectedImage: this.setSelectedImage,
+            isLoadingImage: this.state.isLoadingImage,
+            isLoading: this.state.isLoading,
+            triggerLoader: this.isLoadingImage
           }}
       >
         {this.props.children}

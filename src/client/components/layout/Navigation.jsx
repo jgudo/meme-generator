@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { MemeContext } from '../provider/MemeProvider';
 import UploadButton from './UploadButton';
 
-const Navigation = () => (
-  <div className="navigation">
-    <MemeContext.Consumer>
-      {({ setSelectedImage }) => (
-        <React.Fragment>
-          <span className="navigation__title">Memefy</span>
-          <UploadButton setSelectedImage={setSelectedImage}/>
-        </React.Fragment>
-      )}
-    </MemeContext.Consumer>
-  </div>
-);
+const Navigation = () => {
+  const state = useContext(MemeContext);
+  return (
+    <div className="navigation">
+      <span className="navigation__title">Memefy</span>
+      <UploadButton setSelectedImage={state.setSelectedImage}/>
+    </div>
+  );
+};
 
 export default Navigation;
