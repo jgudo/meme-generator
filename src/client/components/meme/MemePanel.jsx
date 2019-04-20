@@ -31,12 +31,16 @@ class MemePanel extends Component {
   }
 
   componentDidUpdate() {
-    if ('localStorage' in window && localStorage.memefy) {
-      const memefy = JSON.parse(localStorage.getItem('memefy'));
-      localStorage.setItem('memefy', JSON.stringify({ 
-        ...memefy, 
-        settings: this.state 
-      }));
+    try {
+      if ('localStorage' in window && localStorage.memefy) {
+        const memefy = JSON.parse(localStorage.getItem('memefy'));
+        localStorage.setItem('memefy', JSON.stringify({ 
+          ...memefy, 
+          settings: this.state 
+        }));
+      }
+    } catch (e) {
+      console.log('Cannot save to localStorage', e);
     }
 
     if (!this.context.isLoadingImage) {
@@ -47,17 +51,18 @@ class MemePanel extends Component {
 
   onTopTextChange = (e) => {
     const topText = e.target.value;
-    this.setState(() => ({ topText }));
+    this.setState({ topText });
   };
 
   onBottomTextChange = (e) => {
     const bottomText = e.target.value;
-    this.setState(() => ({ bottomText }));
+    this.setState({ bottomText });
   };
 
   onSaveHandler = () => {
     this.save__button.disabled = true;
     this.save__button.textContent = 'Saving Meme ...';
+    
     html2canvas(this.meme__image)
       .then((canvas) => {
         const date = new Date().getTime(); 
@@ -73,12 +78,12 @@ class MemePanel extends Component {
 
   onTopTextColorChange = (e) => {
     const color = e.target.value;
-    this.setState(() => ({ topTextColor: color }));
+    this.setState({ topTextColor: color });
   };
 
   onBottomTextColorChange = (e) => {
     const color = e.target.value;
-    this.setState(() => ({ bottomTextColor: color }));
+    this.setState({ bottomTextColor: color });
   };
 
   render() {
@@ -95,7 +100,6 @@ class MemePanel extends Component {
       isLoadingImage
     } = this.context;
 
-    /* eslint-disable no-return-assign */
     return (
       <div className="meme__panel">
         <div 
@@ -109,7 +113,7 @@ class MemePanel extends Component {
               <div 
                   className="meme__top-text"
                   draggable="true"
-                  ref={node => this.meme__top_text = node }
+                  ref={node => this.meme__top_text = node}
               >
                 <h1 
                     className="meme__text"

@@ -26,13 +26,17 @@ class MemeProvider extends Component {
   }
 
   componentDidUpdate() {
-    if (localStorage.memefy) {
-      const memefy = JSON.parse(localStorage.getItem('memefy'));
-
-      localStorage.setItem('memefy', JSON.stringify({ 
-        ...memefy, 
-        selectedMeme: this.state.selectedMeme
-      }));
+    try {
+      if (localStorage.memefy) {
+        const memefy = JSON.parse(localStorage.getItem('memefy'));
+  
+        localStorage.setItem('memefy', JSON.stringify({ 
+          ...memefy, 
+          selectedMeme: this.state.selectedMeme
+        }));
+      }
+    } catch (e) {
+      console.log('Cannot save  to localStorage', e);
     }
   }
 
@@ -55,7 +59,8 @@ class MemeProvider extends Component {
       }
 
       localStorage.setItem('memefy', JSON.stringify(this.state));
-    } catch(e) {
+    } catch (e) {
+      this.setState({ isLoading: true, isLoadingImage: false });
       console.log('Cannot fetch memes from server', e);
     }
   };

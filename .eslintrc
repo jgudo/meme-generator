@@ -7,7 +7,6 @@
     "id-length": 0,
     "jsx-quotes": 1,
     "no-console": 0,
-    "react-hooks/rules-of-hooks": "error",
     "react/forbid-prop-types": 1,
     "react/jsx-boolean-value": 1,
     "react/jsx-closing-bracket-location": 1,
@@ -33,6 +32,8 @@
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
     "react/sort-prop-types": 1,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "strict": 0,
     "import/no-unresolved": "off",
     "comma-dangle": ["error", {
@@ -57,7 +58,8 @@
     ]}],
     "no-trailing-spaces": [1, { "skipBlankLines": true }],
     "no-underscore-dangle": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "no-return-assign": 0
   },
   "extends": ["airbnb-base"],
   "parserOptions":{
